@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DRosasBackEndAeroMexicoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Pasajero">
+          <Key>
+            <PropertyRef Name="IdPasajero" />
+          </Key>
+          <Property Name="IdPasajero" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vuelo">
+          <Key>
+            <PropertyRef Name="IdVuelo" />
+          </Key>
+          <Property Name="IdVuelo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumeroVuelo" Type="varchar" MaxLength="4" />
+          <Property Name="Origen" Type="varchar" MaxLength="2" />
+          <Property Name="Destino" Type="varchar" MaxLength="2" />
+          <Property Name="FechaSalida" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="VuelosReservados">
+          <Key>
+            <PropertyRef Name="IdVueloReservado" />
+          </Key>
+          <Property Name="IdVueloReservado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" />
+          <Property Name="IdVuelo" Type="int" />
+        </EntityType>
+        <Association Name="FK__VuelosRes__IdUsu__1920BF5C">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="VuelosReservados" Type="Self.VuelosReservados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="VuelosReservados">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VuelosRes__IdVue__1A14E395">
+          <End Role="Vuelo" Type="Self.Vuelo" Multiplicity="0..1" />
+          <End Role="VuelosReservados" Type="Self.VuelosReservados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vuelo">
+              <PropertyRef Name="IdVuelo" />
+            </Principal>
+            <Dependent Role="VuelosReservados">
+              <PropertyRef Name="IdVuelo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetVuelos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FechaInicio" Type="varchar" Mode="In" />
+          <Parameter Name="FechaFin" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="PasajeroAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UsuarioAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UsuarioCheck" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userName" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UsuarioGetByUserName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="VuelosReservadosAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+          <Parameter Name="IdVuelo" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="DRosasBackEndAeroMexicoModelStoreContainer">
+          <EntitySet Name="Pasajero" EntityType="Self.Pasajero" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vuelo" EntityType="Self.Vuelo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VuelosReservados" EntityType="Self.VuelosReservados" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__VuelosRes__IdUsu__1920BF5C" Association="Self.FK__VuelosRes__IdUsu__1920BF5C">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="VuelosReservados" EntitySet="VuelosReservados" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VuelosRes__IdVue__1A14E395" Association="Self.FK__VuelosRes__IdVue__1A14E395">
+            <End Role="Vuelo" EntitySet="Vuelo" />
+            <End Role="VuelosReservados" EntitySet="VuelosReservados" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DRosasBackEndAeroMexicoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="VuelosReservados" Relationship="DRosasBackEndAeroMexicoModel.FK__VuelosRes__IdUsu__1920BF5C" FromRole="Usuario" ToRole="VuelosReservado" />
+        </EntityType>
+        <EntityType Name="Vuelo">
+          <Key>
+            <PropertyRef Name="IdVuelo" />
+          </Key>
+          <Property Name="IdVuelo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumeroVuelo" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Origen" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Destino" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="FechaSalida" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="VuelosReservados" Relationship="DRosasBackEndAeroMexicoModel.FK__VuelosRes__IdVue__1A14E395" FromRole="Vuelo" ToRole="VuelosReservado" />
+        </EntityType>
+        <EntityContainer Name="DRosasBackEndAeroMexicoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <EntitySet Name="Vueloes" EntityType="Self.Vuelo" />
+          <FunctionImport Name="UsuarioAdd">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioCheck" ReturnType="Collection(DRosasBackEndAeroMexicoModel.UsuarioCheck_Result)">
+          <Parameter Name="userName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UsuarioGetByUserName" ReturnType="Collection(DRosasBackEndAeroMexicoModel.UsuarioGetByUserName_Result)">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetVuelos" ReturnType="Collection(DRosasBackEndAeroMexicoModel.GetVuelos_Result)">
+            <Parameter Name="FechaInicio" Mode="In" Type="String" />
+            <Parameter Name="FechaFin" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="VuelosReservados" EntityType="DRosasBackEndAeroMexicoModel.VuelosReservado" />
+          <AssociationSet Name="FK__VuelosRes__IdUsu__1920BF5C" Association="DRosasBackEndAeroMexicoModel.FK__VuelosRes__IdUsu__1920BF5C">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="VuelosReservado" EntitySet="VuelosReservados" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VuelosRes__IdVue__1A14E395" Association="DRosasBackEndAeroMexicoModel.FK__VuelosRes__IdVue__1A14E395">
+            <End Role="Vuelo" EntitySet="Vueloes" />
+            <End Role="VuelosReservado" EntitySet="VuelosReservados" />
+          </AssociationSet>
+          <FunctionImport Name="VuelosReservadosAdd">
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+            <Parameter Name="IdVuelo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Pasajeroes" EntityType="DRosasBackEndAeroMexicoModel.Pasajero" />
+          <FunctionImport Name="PasajeroAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
+            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="UsuarioCheck_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="UsuarioGetByUserName_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetVuelos_Result">
+          <Property Type="Int32" Name="IdVuelo" Nullable="false" />
+          <Property Type="String" Name="NumeroVuelo" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="Origen" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="Destino" Nullable="true" MaxLength="2" />
+          <Property Type="DateTime" Name="FechaSalida" Nullable="true" Precision="16" />
+        </ComplexType>
+        <EntityType Name="VuelosReservado">
+          <Key>
+            <PropertyRef Name="IdVueloReservado" />
+          </Key>
+          <Property Name="IdVueloReservado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUsuario" Type="Int32" />
+          <Property Name="IdVuelo" Type="Int32" />
+          <NavigationProperty Name="Usuario" Relationship="DRosasBackEndAeroMexicoModel.FK__VuelosRes__IdUsu__1920BF5C" FromRole="VuelosReservado" ToRole="Usuario" />
+          <NavigationProperty Name="Vuelo" Relationship="DRosasBackEndAeroMexicoModel.FK__VuelosRes__IdVue__1A14E395" FromRole="VuelosReservado" ToRole="Vuelo" />
+        </EntityType>
+        <Association Name="FK__VuelosRes__IdUsu__1920BF5C">
+          <End Type="DRosasBackEndAeroMexicoModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="DRosasBackEndAeroMexicoModel.VuelosReservado" Role="VuelosReservado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="VuelosReservado">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VuelosRes__IdVue__1A14E395">
+          <End Type="DRosasBackEndAeroMexicoModel.Vuelo" Role="Vuelo" Multiplicity="0..1" />
+          <End Type="DRosasBackEndAeroMexicoModel.VuelosReservado" Role="VuelosReservado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vuelo">
+              <PropertyRef Name="IdVuelo" />
+            </Principal>
+            <Dependent Role="VuelosReservado">
+              <PropertyRef Name="IdVuelo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Pasajero">
+          <Key>
+            <PropertyRef Name="IdPasajero" />
+          </Key>
+          <Property Name="IdPasajero" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DRosasBackEndAeroMexicoModelStoreContainer" CdmEntityContainer="DRosasBackEndAeroMexicoEntities">
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="DRosasBackEndAeroMexicoModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vueloes">
+            <EntityTypeMapping TypeName="DRosasBackEndAeroMexicoModel.Vuelo">
+              <MappingFragment StoreEntitySet="Vuelo">
+                <ScalarProperty Name="IdVuelo" ColumnName="IdVuelo" />
+                <ScalarProperty Name="NumeroVuelo" ColumnName="NumeroVuelo" />
+                <ScalarProperty Name="Origen" ColumnName="Origen" />
+                <ScalarProperty Name="Destino" ColumnName="Destino" />
+                <ScalarProperty Name="FechaSalida" ColumnName="FechaSalida" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="UsuarioAdd" FunctionName="DRosasBackEndAeroMexicoModel.Store.UsuarioAdd" />
+          <FunctionImportMapping FunctionImportName="UsuarioCheck" FunctionName="DRosasBackEndAeroMexicoModel.Store.UsuarioCheck">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DRosasBackEndAeroMexicoModel.UsuarioCheck_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UsuarioGetByUserName" FunctionName="DRosasBackEndAeroMexicoModel.Store.UsuarioGetByUserName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DRosasBackEndAeroMexicoModel.UsuarioGetByUserName_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetVuelos" FunctionName="DRosasBackEndAeroMexicoModel.Store.GetVuelos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DRosasBackEndAeroMexicoModel.GetVuelos_Result">
+                <ScalarProperty Name="IdVuelo" ColumnName="IdVuelo" />
+                <ScalarProperty Name="NumeroVuelo" ColumnName="NumeroVuelo" />
+                <ScalarProperty Name="Origen" ColumnName="Origen" />
+                <ScalarProperty Name="Destino" ColumnName="Destino" />
+                <ScalarProperty Name="FechaSalida" ColumnName="FechaSalida" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="VuelosReservados">
+            <EntityTypeMapping TypeName="DRosasBackEndAeroMexicoModel.VuelosReservado">
+              <MappingFragment StoreEntitySet="VuelosReservados">
+                <ScalarProperty Name="IdVuelo" ColumnName="IdVuelo" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="IdVueloReservado" ColumnName="IdVueloReservado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="VuelosReservadosAdd" FunctionName="DRosasBackEndAeroMexicoModel.Store.VuelosReservadosAdd" />
+          <EntitySetMapping Name="Pasajeroes">
+            <EntityTypeMapping TypeName="DRosasBackEndAeroMexicoModel.Pasajero">
+              <MappingFragment StoreEntitySet="Pasajero">
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdPasajero" ColumnName="IdPasajero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="PasajeroAdd" FunctionName="DRosasBackEndAeroMexicoModel.Store.PasajeroAdd" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
